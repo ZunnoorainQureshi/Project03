@@ -1,0 +1,68 @@
+---
+import '../styles/theme.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  showFooter?: boolean;
+  showNav?: boolean;
+}
+
+const {
+  title = 'Free PDF to Quiz — turn any PDF into MCQs in seconds',
+  description = 'Drop a PDF, get a quiz. 100% client-side, no signup, no upload to a server. Generate 50+ multiple-choice questions and download as PDF.',
+  showFooter = true,
+  showNav = true,
+} = Astro.props;
+
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://rsms.me/" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://freepdftoquiz.com" />
+    <meta property="og:site_name" content="Free PDF to Quiz" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col transition-colors duration-200">
+    {showNav && <Nav />}
+    <main class="flex-1">
+      <slot />
+    </main>
+    {showFooter && <Footer />}
+  </body>
+</html>
